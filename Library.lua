@@ -1,3 +1,5 @@
+repeat task.wait() until game:IsLoaded() == true
+
 local library = {}
 
 function library:CreateWindow(name)
@@ -37,7 +39,9 @@ function library:CreateWindow(name)
 	
 	local epicLib = {}
 	
-	function epicLib:CreateButton(text)
+	function epicLib:CreateButton(text, callback)
+	    local callback = callback or function() end
+	    
 		local Button = Instance.new("TextButton")
 
 		Button.Name = "Button"
@@ -49,9 +53,12 @@ function library:CreateWindow(name)
 		Button.Font = Enum.Font.Nunito
 		Button.Text = text
 		Button.TextColor3 = Color3.fromRGB(180, 180, 180)
-		Button.TextSize = 21.000
+		Button.TextSize = 21.
+		
+		-- callback
+		Button.MouseButton1Down:Connect(function()
+		    pcall(callback)
+		end)
 	end
 	return epicLib
 end
-
-return library
